@@ -10,7 +10,8 @@ import {
   BuySupportedChains,
   SwapValidationErrorType,
   DefaultCurrencies,
-  AmountValidationErrorType
+  AmountValidationErrorType,
+  WalletAccountType
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -29,6 +30,7 @@ export interface Props {
   swapFromAsset: BraveWallet.BlockchainToken
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
+  selectedWalletAccountType: WalletAccountType
   selectedTab: BuySendSwapTypes
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -88,6 +90,7 @@ function BuySendSwap (props: Props) {
     swapFromAsset,
     selectedNetwork,
     selectedAccount,
+    selectedWalletAccountType,
     selectedTab,
     exchangeRate,
     slippageTolerance,
@@ -181,6 +184,7 @@ function BuySendSwap (props: Props) {
           swapFromAsset={swapFromAsset}
           selectedNetwork={selectedNetwork}
           selectedAccount={selectedAccount}
+          selectedWalletAccountType={selectedWalletAccountType}
           exchangeRate={exchangeRate}
           orderExpiration={orderExpiration}
           slippageTolerance={slippageTolerance}
@@ -230,6 +234,7 @@ function BuySendSwap (props: Props) {
           onSetToAddressOrUrl={onSetToAddressOrUrl}
           onSubmit={onSubmitSend}
           selectedAccount={selectedAccount}
+          selectedWalletAccountType={selectedWalletAccountType}
           selectedNetwork={selectedNetwork}
           selectedAsset={selectedSendAsset}
           showHeader={true}
