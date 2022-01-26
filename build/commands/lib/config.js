@@ -519,6 +519,9 @@ Config.prototype.buildArgs = function () {
       args.goma_dir = this.nativeRedirectCCDir
     } else {
       args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
+      if (this.use_goma) {
+        args.action_pool_depth = os.cpus().length
+      }
     }
   } else if (process.platform === 'win32') {
     args.cc_wrapper = path.join(this.srcDir, 'brave', 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
@@ -658,6 +661,9 @@ Config.prototype.update = function (options) {
   if (options.native_redirect_cc || true) {
     this.nativeRedirectCC = true
     this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
+    if (process.platform !== 'win32') {
+      this.defaultGomaJValue = os.cpus().length * 4
+    }
   } else {
     this.nativeRedirectCC = false
   }

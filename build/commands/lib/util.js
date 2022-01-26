@@ -623,7 +623,7 @@ const util = {
       assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
       options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
       if (config.nativeRedirectCC) {
-        options.env.GOMA_LOCAL_RUN_DELAY_MSEC = 5000
+        options.env.GOMA_LOCAL_RUN_DELAY_MSEC = 15000
       }
 
       // This skips the auth check and make this call instant if compiler_proxy is already running.
