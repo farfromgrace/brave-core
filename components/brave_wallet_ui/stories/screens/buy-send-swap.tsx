@@ -234,7 +234,6 @@ function BuySendSwap (props: Props) {
           onSetToAddressOrUrl={onSetToAddressOrUrl}
           onSubmit={onSubmitSend}
           selectedAccount={selectedAccount}
-          selectedWalletAccountType={selectedWalletAccountType}
           selectedNetwork={selectedNetwork}
           selectedAsset={selectedSendAsset}
           showHeader={true}

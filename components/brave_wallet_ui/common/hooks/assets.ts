@@ -78,9 +78,24 @@ export default function useAssets (
     })
   }, [selectedAccount, userVisibleTokensInfo, getBalance, computeFiatAmount])
 
+  const sendAssetOptions = React.useMemo(() => {
+    if (!userVisibleTokensInfo) {
+      return []
+    }
+
+    if (!selectedAccount) {
+      return []
+    }
+
+    return userVisibleTokensInfo.filter(token => {
+      const balance = getBalance(selectedAccount, token)
+      return balance !== '' && parseInt(balance) > 0
+    })
+  }, [selectedAccount, userVisibleTokensInfo, getBalance])
+
   return {
     swapAssetOptions,
-    sendAssetOptions: userVisibleTokensInfo,
+    sendAssetOptions,
     buyAssetOptions,
     panelUserAssetList
   }

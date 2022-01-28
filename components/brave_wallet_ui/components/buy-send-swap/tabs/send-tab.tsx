@@ -4,22 +4,19 @@ import {
   BuySendSwapViewTypes,
   ToOrFromType,
   BraveWallet,
-  AmountValidationErrorType,
-  WalletAccountType
+  AmountValidationErrorType
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
   Header,
   Send
 } from '..'
-import { usePositiveBalance } from '../../../common/hooks'
 
 export interface Props {
   accounts: UserAccountType[]
   selectedAsset: BraveWallet.BlockchainToken
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
-  selectedWalletAccountType: WalletAccountType
   selectedAssetAmount: string
   selectedAssetBalance: string
   assetOptions: BraveWallet.BlockchainToken[]
@@ -48,7 +45,6 @@ function SendTab (props: Props) {
     selectedAsset,
     selectedNetwork,
     selectedAccount,
-    selectedWalletAccountType,
     selectedAssetAmount,
     selectedAssetBalance,
     toAddressOrUrl,
@@ -69,12 +65,6 @@ function SendTab (props: Props) {
     onAddAsset
   } = props
   const [sendView, setSendView] = React.useState<BuySendSwapViewTypes>('send')
-  const positiveBalanceAssetOptions = usePositiveBalance(
-    selectedNetwork,
-    assetOptions,
-    selectedWalletAccountType
-  )()
-
   const onChangeSendView = (view: BuySendSwapViewTypes) => {
     setSendView(view)
   }
@@ -144,7 +134,7 @@ function SendTab (props: Props) {
           accounts={accounts}
           networkList={networkList}
           goBack={goBack}
-          assetOptions={positiveBalanceAssetOptions}
+          assetOptions={assetOptions}
           onClickSelectAccount={onClickSelectAccount}
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectedAsset}
