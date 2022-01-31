@@ -4,7 +4,7 @@ import {
   mockAssetPrices,
   mockNetwork
 } from '../constants/mocks'
-import { AccountAssetOptions } from '../../options/asset-options'
+import { AccountAssetOptions, ETH } from '../../options/asset-options'
 import useAssets from './assets'
 import { WalletAccountType } from '../../constants/types'
 
@@ -46,12 +46,12 @@ describe('useAssets hook', () => {
     expect(result.current.panelUserAssetList).toEqual(expectedResult)
   })
 
-  it('Selected account has 0 balances, should return an empty array', async () => {
+  it('Selected account has 0 balances, should return an array including native token', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccounts[1], mockNetwork, mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
     await act(async () => {
       await waitForNextUpdate()
     })
-    expect(result.current.panelUserAssetList).toEqual([])
+    expect(result.current.panelUserAssetList).toEqual([ETH])
   })
 
   it('should return empty array for panelUserAssetList if visible assets is empty', async () => {
