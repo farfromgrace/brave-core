@@ -126,7 +126,8 @@ function Container (props: Props) {
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
 
   const {
-    swapAssetOptions,
+    swapToListAssetOptions,
+    swapFromListAssetOptions,
     sendAssetOptions,
     buyAssetOptions
   } = useAssets(
@@ -172,7 +173,7 @@ function Container (props: Props) {
   } = useSwap(
     selectedAccount,
     selectedNetwork,
-    swapAssetOptions,
+    swapToListAssetOptions,
     props.walletPageActions.fetchPageSwapQuote,
     getERC20Allowance,
     props.walletActions.approveERC20Allowance,
@@ -671,7 +672,6 @@ function Container (props: Props) {
             swapFromAsset={fromAsset}
             selectedNetwork={selectedNetwork}
             selectedAccount={selectedAccount}
-            selectedWalletAccountType={selectedAccount}
             selectedTab={selectedWidgetTab}
             exchangeRate={exchangeRate}
             buyAmount={buyAmount}
@@ -692,7 +692,8 @@ function Container (props: Props) {
             selectedSendAsset={selectedSendAsset}
             sendAssetBalance={sendAssetBalance}
             sendAssetOptions={sendAssetOptions}
-            swapAssetOptions={swapAssetOptions}
+            swapFromListAssetOptions={swapFromListAssetOptions}
+            swapToListAssetOptions={swapToListAssetOptions}
             isFetchingSwapQuote={isFetchingSwapQuote}
             isSwapSubmitDisabled={isSwapButtonDisabled}
             isSwapSupported={isSwapSupported}

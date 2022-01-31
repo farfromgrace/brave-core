@@ -139,7 +139,8 @@ function Container (props: Props) {
   const [buyAmount, setBuyAmount] = React.useState('')
 
   const {
-    swapAssetOptions,
+    swapFromListAssetOptions,
+    // swapToListAssetOptions,
     sendAssetOptions,
     buyAssetOptions,
     panelUserAssetList
@@ -186,7 +187,7 @@ function Container (props: Props) {
   } = useSwap(
     selectedAccount,
     selectedNetwork,
-    swapAssetOptions,
+    swapFromListAssetOptions,
     props.walletPanelActions.fetchPanelSwapQuote,
     getERC20Allowance,
     props.walletActions.approveERC20Allowance,

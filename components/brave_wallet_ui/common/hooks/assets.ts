@@ -26,7 +26,6 @@ export default function useAssets (
 ) {
   const { computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance(selectedNetwork)
-
   const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return [
       ETH,
@@ -53,7 +52,7 @@ export default function useAssets (
     }).catch(e => console.error(e))
   }, [])
 
-  const panelUserAssetList = React.useMemo(() => {
+  const positiveBalanceUserAssetList = React.useMemo(() => {
     if (!userVisibleTokensInfo) {
       return []
     }
@@ -64,7 +63,9 @@ export default function useAssets (
 
     const nonZeroBalanceAssets = userVisibleTokensInfo.filter(token => {
       const balance = getBalance(selectedAccount, token)
-      return balance !== '' && parseInt(balance) > 0
+      // Native token should be part of the list
+      return (balance !== '' && parseInt(balance) > 0) ||
+        token.symbol.toLowerCase() === selectedNetwork.symbol.toLowerCase()
     })
 
     return nonZeroBalanceAssets.sort(function (a, b) {
@@ -76,27 +77,13 @@ export default function useAssets (
 
       return Number(bFiatBalance) - Number(aFiatBalance)
     })
-  }, [selectedAccount, userVisibleTokensInfo, getBalance, computeFiatAmount])
-
-  const sendAssetOptions = React.useMemo(() => {
-    if (!userVisibleTokensInfo) {
-      return []
-    }
-
-    if (!selectedAccount) {
-      return []
-    }
-
-    return userVisibleTokensInfo.filter(token => {
-      const balance = getBalance(selectedAccount, token)
-      return balance !== '' && parseInt(balance) > 0
-    })
-  }, [selectedAccount, userVisibleTokensInfo, getBalance])
+  }, [selectedAccount, selectedNetwork, userVisibleTokensInfo, getBalance, computeFiatAmount])
 
   return {
-    swapAssetOptions,
-    sendAssetOptions,
+    swapFromListAssetOptions: positiveBalanceUserAssetList,
+    swapToListAssetOptions: swapAssetOptions,
+    sendAssetOptions: positiveBalanceUserAssetList,
     buyAssetOptions,
-    panelUserAssetList
+    panelUserAssetList: positiveBalanceUserAssetList
   }
 }

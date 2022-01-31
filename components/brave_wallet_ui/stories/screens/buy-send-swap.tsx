@@ -10,8 +10,7 @@ import {
   BuySupportedChains,
   SwapValidationErrorType,
   DefaultCurrencies,
-  AmountValidationErrorType,
-  WalletAccountType
+  AmountValidationErrorType
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -30,7 +29,6 @@ export interface Props {
   swapFromAsset: BraveWallet.BlockchainToken
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
-  selectedWalletAccountType: WalletAccountType
   selectedTab: BuySendSwapTypes
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
@@ -49,7 +47,8 @@ export interface Props {
   addressWarning: string
   buyAssetOptions: BraveWallet.BlockchainToken[]
   sendAssetOptions: BraveWallet.BlockchainToken[]
-  swapAssetOptions: BraveWallet.BlockchainToken[]
+  swapFromListAssetOptions: BraveWallet.BlockchainToken[]
+  swapToListAssetOptions: BraveWallet.BlockchainToken[]
   isFetchingSwapQuote: boolean
   isSwapSubmitDisabled: boolean
   isSwapSupported: boolean
@@ -90,7 +89,6 @@ function BuySendSwap (props: Props) {
     swapFromAsset,
     selectedNetwork,
     selectedAccount,
-    selectedWalletAccountType,
     selectedTab,
     exchangeRate,
     slippageTolerance,
@@ -109,7 +107,8 @@ function BuySendSwap (props: Props) {
     toAddressOrUrl,
     buyAssetOptions,
     sendAssetOptions,
-    swapAssetOptions,
+    swapFromListAssetOptions,
+    swapToListAssetOptions,
     swapValidationError,
     sendAmountValidationError,
     isFetchingSwapQuote,
@@ -184,7 +183,6 @@ function BuySendSwap (props: Props) {
           swapFromAsset={swapFromAsset}
           selectedNetwork={selectedNetwork}
           selectedAccount={selectedAccount}
-          selectedWalletAccountType={selectedWalletAccountType}
           exchangeRate={exchangeRate}
           orderExpiration={orderExpiration}
           slippageTolerance={slippageTolerance}
@@ -209,7 +207,8 @@ function BuySendSwap (props: Props) {
           onSetFromAmount={onSetFromAmount}
           onSetToAmount={onSetToAmount}
           onSelectPresetAmount={onSelectPresetFromAmount}
-          assetOptions={swapAssetOptions}
+          swapFromListAssetOptions={swapFromListAssetOptions}
+          swapToListAssetOptions={swapToListAssetOptions}
           onQuoteRefresh={onSwapQuoteRefresh}
           onAddNetwork={onAddNetwork}
           onAddAsset={onClickAddAsset}
