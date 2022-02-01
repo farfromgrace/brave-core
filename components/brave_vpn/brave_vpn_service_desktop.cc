@@ -379,6 +379,11 @@ void BraveVpnServiceDesktop::BindInterface(
   receivers_.Add(this, std::move(receiver));
 }
 
+void BraveVpnServiceDesktop::OnPanelVisible() {
+  // Change state to loading and check for credentials
+  NOTIMPLEMENTED();
+}
+
 void BraveVpnServiceDesktop::GetConnectionState(
     GetConnectionStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

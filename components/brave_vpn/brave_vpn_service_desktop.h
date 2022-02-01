@@ -61,6 +61,7 @@ class BraveVpnServiceDesktop
 
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
+  void OnPanelVisible();
 
   // mojom::vpn::ServiceHandler
   void AddObserver(
