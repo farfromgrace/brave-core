@@ -135,6 +135,7 @@ class BraveVpnServiceDesktop
                                  bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
+  void OnCredentialSummary(const std::string& summary_string);
   void OnPrepareCredentialsPresentation(
       const std::string& credential_as_cookie);
 
@@ -156,6 +157,7 @@ class BraveVpnServiceDesktop
   std::unique_ptr<brave_vpn::Hostname> hostname_;
   brave_vpn::BraveVPNConnectionInfo connection_info_;
   bool cancel_connecting_ = false;
+  //base::Time expires_time_ = base::Time::Now();
   PurchasedState purchased_state_ = PurchasedState::NOT_PURCHASED;
   ConnectionState connection_state_ = ConnectionState::DISCONNECTED;
   bool needs_connect_ = false;
