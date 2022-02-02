@@ -652,6 +652,14 @@ const util = {
 
     if (config.isCI && config.use_goma) {
       util.run('goma_ctl', ['stat'], options)
+
+      const reportProg = util.run('goma_ctl', ['report'], {...options, stdio: 'pipe'})
+      for (let line of reportProg.stdout.toString().split('\n')) {
+        line = line.trim()
+        if (line.endsWith('.tgz')) {
+          fs.copySync(line, path.join(config.outputDir, `goma-report-${config.buildTarget}.tgz`))
+        }
+      }
     }
   },
 
