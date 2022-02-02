@@ -622,9 +622,6 @@ const util = {
       const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
       assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
       options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
-      if (config.nativeRedirectCC) {
-        options.env.GOMA_LOCAL_RUN_DELAY_MSEC = 15000
-      }
 
       // This skips the auth check and make this call instant if compiler_proxy is already running.
       // If compiler_proxy is not running, it will fail to start if no valid credentials are found.
