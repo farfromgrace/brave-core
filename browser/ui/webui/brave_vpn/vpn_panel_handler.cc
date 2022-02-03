@@ -26,6 +26,10 @@ void VPNPanelHandler::ShowUI() {
       BraveVpnServiceFactory::GetForProfile(profile_);
   if (embedder) {
     embedder->ShowUI();
+    // TODO (bsclifton): this may not be needed
+    // WebUI can instead call `GetPurchasedState`
+    // as long as observers are notified about state
+    // changes.
     vpn_service_desktop->OnPanelVisible();
   }
 }

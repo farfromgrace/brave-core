@@ -116,12 +116,6 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
   // the user has previously connected. So, try connection checking.
   if (is_purchased_user())
     GetBraveVPNConnectionAPI()->CheckConnection(kBraveVPNEntryName);
-
-  pref_change_registrar_.Init(prefs_);
-  pref_change_registrar_.Add(
-      skus::prefs::kSkusVPNHasCredential,
-      base::BindRepeating(&BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated,
-                          base::Unretained(this)));
 }
 
 BraveVpnServiceDesktop::~BraveVpnServiceDesktop() {
@@ -154,7 +148,6 @@ void BraveVpnServiceDesktop::Shutdown() {
   observed_.Reset();
   receivers_.Clear();
   observers_.Clear();
-  pref_change_registrar_.RemoveAll();
 }
 
 void BraveVpnServiceDesktop::OnCreated() {
@@ -380,15 +373,8 @@ void BraveVpnServiceDesktop::BindInterface(
   receivers_.Add(this, std::move(receiver));
 }
 
+// TODO(bsclifton): can we remove this?
 void BraveVpnServiceDesktop::OnPanelVisible() {
-  // Change state to loading and check for credentials
-  // SetPurchasedState(PurchasedState::LOADING);
-  // // if a credential is ready, we can present it
-  // EnsureMojoConnected();
-  // skus_service_->CredentialSummary(
-  //     skus::GetDomain("vpn"),
-  //     base::BindOnce(&BraveVpnServiceDesktop::OnCredentialSummary,
-  //                    base::Unretained(this)));
 }
 
 void BraveVpnServiceDesktop::GetConnectionState(
@@ -400,17 +386,8 @@ void BraveVpnServiceDesktop::GetConnectionState(
 
 void BraveVpnServiceDesktop::GetPurchasedState(
     GetPurchasedStateCallback callback) {
-  // BSC]] FINISH ME
-  //if (expires_time_ < base::Time::Now()) {
-  SetPurchasedState(PurchasedState::LOADING);
-  // if a credential is ready, we can present it
-  EnsureMojoConnected();
-  skus_service_->CredentialSummary(
-      skus::GetDomain("vpn"),
-      base::BindOnce(&BraveVpnServiceDesktop::OnCredentialSummary,
-                     base::Unretained(this)));
-
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  LoadPurchasedState();
   VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
   std::move(callback).Run(purchased_state_);
 }
@@ -458,32 +435,33 @@ void BraveVpnServiceDesktop::OnCredentialSummary(
                             &summary_string_trimmed);
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
-    LOG(ERROR) << "BSC]] OnCredentialSummary IS EMPTY!";
+    LOG(ERROR) << "No credential found; user needs to login!";
     SetPurchasedState(PurchasedState::NOT_PURCHASED);
     return;
   }
 
-  // TODO: parse string here
-  LOG(ERROR) << "BSC]] OnCredentialSummary: " << summary_string;
+  LOG(ERROR) << "credential_summary returned: `" << summary_string << "`";
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
-  // TODO(bsclifton): pull out to a separate method
   if (records_v) {
-    // if (domain == "vpn.brave.com" || domain == "vpn.bravesoftware.com" ||
-    //     domain == "vpn.brave.software") {
-      const base::Value* active = records_v->FindKey("active");
-      LOG(ERROR) << "BSC]] active = "
-                 << ((bool)active && active->is_bool() && active->GetBool());
-      //    if (active) {
-      //       bool has_credential = active && active->is_bool() &&
-      //       active->GetBool();
-      //       prefs_->SetBoolean(skus::prefs::kSkusVPNHasCredential,
-      //       has_credential);
-      //     }
-    // }
+    const base::Value* active = records_v->FindKey("active");
+    bool has_credential = active && active->is_bool() && active->GetBool();
+    if (has_credential) {
+      LOG(ERROR) << "Active credential found!";
+      // if a credential is ready, we can present it
+      EnsureMojoConnected();
+      skus_service_->PrepareCredentialsPresentation(
+          skus::GetDomain("vpn"), "*",
+          base::BindOnce(
+              &BraveVpnServiceDesktop::OnPrepareCredentialsPresentation,
+              base::Unretained(this)));
+    } else {
+      LOG(ERROR) << "Credential appears to be expired.";
+      SetPurchasedState(PurchasedState::EXPIRED);
+    }
   }
 }
 
@@ -494,12 +472,14 @@ void BraveVpnServiceDesktop::OnPrepareCredentialsPresentation(
   net::CookieInclusionStatus status;
   net::ParsedCookie credential_cookie(credential_as_cookie, &status);
   // TODO(bsclifton): have a better check / logging.
+  // should these failed states be considered NOT_PURCHASED?
+  // or maybe it can be considered FAILED status?
   if (!credential_cookie.IsValid()) {
-    VLOG(2) << __func__ << " : FAILED credential_cookie.IsValid";
+    LOG(ERROR) << __func__ << " : FAILED credential_cookie.IsValid";
     return;
   }
   if (!status.IsInclude()) {
-    VLOG(2) << __func__ << " : FAILED status.IsInclude";
+    LOG(ERROR) << __func__ << " : FAILED status.IsInclude";
     return;
   }
 
@@ -514,19 +494,18 @@ void BraveVpnServiceDesktop::OnPrepareCredentialsPresentation(
   base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
 
   // Only update credential if different
-  if (skus_credential_ == credential)
+  SetPurchasedState(PurchasedState::PURCHASED);
+  if (skus_credential_ == credential) {
     return;
-
+  }
   skus_credential_ = credential;
   if (!skus_credential_.empty()) {
     VLOG(2) << __func__ << " : "
             << "Loaded cached skus credentials";
-    SetPurchasedState(PurchasedState::PURCHASED);
   }
 }
 
 void BraveVpnServiceDesktop::LoadPurchasedState() {
-  LOG(ERROR) << "BSC]] LoadPurchasedState";
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if !defined(OFFICIAL_BUILD)
   auto* cmd = base::CommandLine::ForCurrentProcess();
@@ -538,24 +517,11 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
   }
 #endif
 
-  const bool has_credential =
-      prefs_->GetBoolean(skus::prefs::kSkusVPNHasCredential);
-
-  if (!has_credential) {
-    // TODO(bsclifton): we can show logic for person to login
-    // NOTE: we might save (to profile) if person EVER had a valid
-    // credential. If so, we may want to show an expired dialog
-    // instead of the "purchase" dialog.
-    skus_credential_ = "";
-    return;
-  }
-
+  SetPurchasedState(PurchasedState::LOADING);
   EnsureMojoConnected();
-
-  // if a credential is ready, we can present it
-  skus_service_->PrepareCredentialsPresentation(
-      skus::GetDomain("vpn"), "*",
-      base::BindOnce(&BraveVpnServiceDesktop::OnPrepareCredentialsPresentation,
+  skus_service_->CredentialSummary(
+      skus::GetDomain("vpn"),
+      base::BindOnce(&BraveVpnServiceDesktop::OnCredentialSummary,
                      base::Unretained(this)));
 }
 
@@ -916,7 +882,7 @@ void BraveVpnServiceDesktop::ParseAndCacheHostnames(
 
   // Get subscriber credentials and then get EAP credentials with it to create
   // OS VPN entry.
-  VLOG(2) << __func__ << " : request subsriber credential";
+  VLOG(2) << __func__ << " : request subscriber credential";
   GetSubscriberCredentialV12(
       base::BindOnce(&BraveVpnServiceDesktop::OnGetSubscriberCredential,
                      base::Unretained(this)),
@@ -926,19 +892,19 @@ void BraveVpnServiceDesktop::ParseAndCacheHostnames(
 void BraveVpnServiceDesktop::SetPurchasedState(PurchasedState state) {
   switch (state) {
     case PurchasedState::NOT_PURCHASED:
-      LOG(ERROR) << "BSC]] SetPurchasedState(NOT_PURCHASED);";
+      LOG(ERROR) << "SetPurchasedState(NOT_PURCHASED);";
       break;
     case PurchasedState::PURCHASED:
-      LOG(ERROR) << "BSC]] SetPurchasedState(PURCHASED);";
+      LOG(ERROR) << "SetPurchasedState(PURCHASED);";
       break;
     case PurchasedState::EXPIRED:
-      LOG(ERROR) << "BSC]] SetPurchasedState(EXPIRED);";
+      LOG(ERROR) << "SetPurchasedState(EXPIRED);";
       break;
     case PurchasedState::LOADING:
-      LOG(ERROR) << "BSC]] SetPurchasedState(LOADING);";
+      LOG(ERROR) << "SetPurchasedState(LOADING);";
       break;
     case PurchasedState::FAILED:
-      LOG(ERROR) << "BSC]] SetPurchasedState(FAILED);";
+      LOG(ERROR) << "SetPurchasedState(FAILED);";
       break;
   }
 
@@ -967,11 +933,6 @@ void BraveVpnServiceDesktop::EnsureMojoConnected() {
 void BraveVpnServiceDesktop::OnMojoConnectionError() {
   skus_service_.reset();
   EnsureMojoConnected();
-}
-
-void BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  LoadPurchasedState();
 }
 
 void BraveVpnServiceDesktop::OnGetSubscriberCredential(
