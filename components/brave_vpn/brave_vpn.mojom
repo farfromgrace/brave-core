@@ -74,4 +74,5 @@ struct Region {
   string continent;
   string name;
   string name_pretty;
+  string country_iso_code;
 };
