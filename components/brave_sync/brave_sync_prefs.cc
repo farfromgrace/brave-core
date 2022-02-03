@@ -167,6 +167,12 @@ void Prefs::SetDismissSyncMigrateNotice(bool is_dismissed) {
 
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
+  // duplicating it here from
+  // chromium_src/components/sync_device_info/device_info_prefs.cc to avoid
+  // circular dependency
+  const char kResetDevicesProgressTokenTime[] =
+      "brave_sync_v2.reset_devices_progress_token_time";
+  pref_service_->ClearPref(kResetDevicesProgressTokenTime);
 }
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {
