@@ -76,6 +76,8 @@ bool GetUseStagingInfuraEndpoint() {
   return env->HasVar("BRAVE_INFURA_STAGING");
 }
 
+// Keeping chaind ids as 0x1000+ until we add symbol as key in
+// https://github.com/brave/brave-browser/issues/20831
 const brave_wallet::mojom::EthereumChain kFilecoinNetworks[] = {
     {"0x1000",
      "Filecoin Mainnet",
