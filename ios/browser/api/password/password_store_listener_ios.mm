@@ -73,18 +73,15 @@ void PasswordStoreListenerIOS::OnLoginsRetained(
 
 @interface PasswordStoreListenerImpl () {
   std::unique_ptr<brave::ios::PasswordStoreListenerIOS> observer_;
-  scoped_refptr<password_manager::PasswordStoreInterface> store_;
 }
 @end
 
 @implementation PasswordStoreListenerImpl
 - (instancetype)init:(id<PasswordStoreObserver>)observer
-      passwordStore:(void*)store {
+      passwordStore:(scoped_refptr<password_manager::PasswordStoreInterface>)store {
   if ((self = [super init])) {
     observer_ = std::make_unique<brave::ios::PasswordStoreListenerIOS>(
-        observer, static_cast<scoped_refptr<password_manager::PasswordStoreInterface>>(store));
-
-    store_ = static_cast<scoped_refptr<password_manager::PasswordStoreInterface>>(store);
+        observer, store);
   }
   return self;
 }

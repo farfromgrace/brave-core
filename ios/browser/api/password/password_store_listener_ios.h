@@ -17,7 +17,7 @@
 
 @interface PasswordStoreListenerImpl : NSObject <PasswordStoreListener>
 - (instancetype)init:(id<PasswordStoreObserver>)observer
-      passwordStore:(void*)store;
+      passwordStore:(scoped_refptr<password_manager::PasswordStoreInterface>)store;
 @end
 
 namespace brave {
@@ -39,7 +39,7 @@ class PasswordStoreListenerIOS : public password_manager::PasswordStoreInterface
                             retained_passwords) override;
 
   id<PasswordStoreObserver> observer_;
-  scoped_refptr<password_manager::PasswordStoreInterface> store_;  // NOT OWNED
+  scoped_refptr<password_manager::PasswordStoreInterface> store_;
 };
 
 }  // namespace ios
