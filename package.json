@@ -43,7 +43,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brave/brave-core.git"
+    "url": "git+https://github.com/farfromgrace/brave-core.git"
   },
   "author": {
     "name": "Brave Software <support@brave.com>"
@@ -248,9 +248,9 @@
   ],
   "license": "MPL-2.0",
   "bugs": {
-    "url": "https://github.com/brave/brave-browser/issues"
+    "url": "https://github.com/farfromgrace/brave-browser/issues"
   },
-  "homepage": "https:/github.com/brave/brave-core#readme",
+  "homepage": "https:/github.com/farfromgrace/brave-core#readme",
   "config": {
     "projects": {
       "chrome": {
