@@ -255,7 +255,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "98.0.4758.87",
+        "tag": "rename",
         "repository": {
           "url": "ssh://git@github.com/farfromgrace/chromium"
         }
