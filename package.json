@@ -257,7 +257,7 @@
         "dir": "src",
         "tag": "98.0.4758.87",
         "repository": {
-          "url": "https://github.com/chromium/chromium"
+          "url": "ssh://git@github.com/farfromgrace/chromium"
         }
       }
     }
