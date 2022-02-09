@@ -19,119 +19,119 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     prune_paths.update([
         # Formerly external Brave code which has moved to brave-core
         # (i.e these are already covered by the Brave Browser license notice).
-        os.path.join('brave', 'vendor', 'bat-native-ads'),
-        os.path.join('brave', 'vendor', 'bat-native-ledger'),
-        os.path.join('brave', 'vendor', 'brave-ios'),
-        os.path.join('brave', 'vendor', 'brave_base'),
+        os.path.join('osiris', 'vendor', 'bat-native-ads'),
+        os.path.join('osiris', 'vendor', 'bat-native-ledger'),
+        os.path.join('osiris', 'vendor', 'brave-ios'),
+        os.path.join('osiris', 'vendor', 'brave_base'),
 
         # Brave overrides to third-party code, also covered by main notice.
-        os.path.join('brave', 'third_party', 'android_deps'),
-        os.path.join('brave', 'third_party', 'blink'),
-        os.path.join('brave', 'third_party', 'libaddressinput'),
+        os.path.join('osiris', 'third_party', 'android_deps'),
+        os.path.join('osiris', 'third_party', 'blink'),
+        os.path.join('osiris', 'third_party', 'libaddressinput'),
 
         # Build dependencies which don't end up in the binaries.
-        os.path.join('brave', 'vendor', 'depot_tools'),
-        os.path.join('brave', 'vendor', 'gn-project-generators')
+        os.path.join('osiris', 'vendor', 'depot_tools'),
+        os.path.join('osiris', 'vendor', 'gn-project-generators')
     ])
 
     # Add the licensing info that would normally be in a README.chromium file.
     # This is for when we pull in external repos directly.
     special_cases.update({
-        os.path.join('brave', 'vendor', 'bat-native-anonize'): {
+        os.path.join('osiris', 'vendor', 'bat-native-anonize'): {
             "Name": "bat-native-anonize",
             "URL": "https://github.com/brave-intl/bat-native-anonize",
             "License": "Apache-2.0",
-            "License File": "/brave/vendor/bat-native-anonize/LICENSE.txt",
+            "License File": "/osiris/vendor/bat-native-anonize/LICENSE.txt",
         },
-        os.path.join('brave', 'vendor', 'bat-native-rapidjson'): {
+        os.path.join('osiris', 'vendor', 'bat-native-rapidjson'): {
             "Name": "RapidJSON",
             "URL": "https://github.com/brave-intl/bat-native-rapidjson",
             "License": "MIT",
-            "License File": "/brave/vendor/bat-native-rapidjson/license.txt",
+            "License File": "/osiris/vendor/bat-native-rapidjson/license.txt",
         },
-        os.path.join('brave', 'vendor', 'bat-native-tweetnacl'): {
+        os.path.join('osiris', 'vendor', 'bat-native-tweetnacl'): {
             "Name": "TweetNaCl",
             "URL": "https://github.com/brave-intl/bat-native-tweetnacl",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'bip39wally-core-native'): {
+        os.path.join('osiris', 'vendor', 'bip39wally-core-native'): {
             "Name": "libwally-core",
             "URL": "https://github.com/brave-intl/bat-native-bip39wally-core",
             "License": "MIT",
         },
-        os.path.join('brave', 'vendor', 'boto'): {
+        os.path.join('osiris', 'vendor', 'boto'): {
             "Name": "boto",
             "URL": "https://github.com/boto/boto",
             "License": "MIT",
         },
-        os.path.join('brave', 'vendor', 'brave-extension'): {
+        os.path.join('osiris', 'vendor', 'brave-extension'): {
             "Name": "Brave Only Extension",
             "URL": "https://github.com/brave/brave-extension",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'challenge_bypass_ristretto_ffi'): {
+        os.path.join('osiris', 'vendor', 'challenge_bypass_ristretto_ffi'): {
             "Name": "challenge-bypass-ristretto-ffi",
             "URL":
                 "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'extension-whitelist'): {
+        os.path.join('osiris', 'vendor', 'extension-whitelist'): {
             "Name": "extension-whitelist",
             "URL": "https://github.com/brave/extension-whitelist",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'hashset-cpp'): {
+        os.path.join('osiris', 'vendor', 'hashset-cpp'): {
             "Name": "Hash Set",
             "URL": "https://github.com/brave/hashset-cpp",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'web-discovery-project'): {
+        os.path.join('osiris', 'vendor', 'web-discovery-project'): {
             "Name": "Web Discovery Project",
             "URL": "https://github.com/brave/web-discovery-project",
             "License": "MPL-2.0",
         },
-        os.path.join('brave', 'vendor', 'omaha'): {
+        os.path.join('osiris', 'vendor', 'omaha'): {
             "Name": "Omaha",
             "URL": "https://github.com/brave/omaha",
             "License": "Apache-2.0",
-            "License File": "/brave/vendor/omaha/LICENSE.txt",
+            "License File": "/osiris/vendor/omaha/LICENSE.txt",
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'breakpad'): {
+        os.path.join('osiris', 'vendor', 'omaha', 'third_party', 'breakpad'): {
             "Name": "Breakpad",
             "URL": "https://chromium.googlesource.com/breakpad/breakpad",
-            "License File": "/brave/vendor/omaha/third_party/breakpad/LICENSE",
+            "License File": "/osiris/vendor/omaha/third_party/breakpad/LICENSE",
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'googletest'): {
+        os.path.join('osiris', 'vendor', 'omaha', 'third_party', 'googletest'): {
             "Name": "GoogleTest",
             "URL": "https://github.com/google/googletest",
             "License": "BSD",
             "License File":
-                "/brave/vendor/omaha/third_party/googletest/LICENSE",
+                "/osiris/vendor/omaha/third_party/googletest/LICENSE",
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'libzip'): {
+        os.path.join('osiris', 'vendor', 'omaha', 'third_party', 'libzip'): {
             "Name": "libzip",
             "URL": "https://libzip.org",
             "License": "BSD",
-            "License File": "/brave/vendor/omaha/third_party/libzip/LICENSE",
+            "License File": "/osiris/vendor/omaha/third_party/libzip/LICENSE",
         },
-        os.path.join('brave', 'vendor', 'omaha', 'third_party', 'zlib'): {
+        os.path.join('osiris', 'vendor', 'omaha', 'third_party', 'zlib'): {
             "Name": "zlib",
             "URL": "https://zlib.net",
             "License": "zlib",
-            "License File": "/brave/vendor/omaha/third_party/zlib/README",
+            "License File": "/osiris/vendor/omaha/third_party/zlib/README",
         },
-        os.path.join('brave', 'vendor', 'python-patch'): {
+        os.path.join('osiris', 'vendor', 'python-patch'): {
             "Name": "Python Patch",
             "URL": "https://github.com/brave/python-patch",
             "License": "MIT",
-            "License File": "/brave/vendor/python-patch/doc/LICENSE",
+            "License File": "/osiris/vendor/python-patch/doc/LICENSE",
         },
-        os.path.join('brave', 'vendor', 'requests'): {
+        os.path.join('osiris', 'vendor', 'requests'): {
             "Name": "Requests",
             "URL": "https://github.com/psf/requests",
             "License": "Apache-2.0",
         },
-        os.path.join('brave', 'vendor', 'sparkle'): {
+        os.path.join('osiris', 'vendor', 'sparkle'): {
             "Name": "Sparkle",
             "URL": "https://github.com/brave/Sparkle",
             "License": "MIT",
@@ -152,7 +152,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
     # contained under a "third_party" or "vendor" directory.
     additional_list = list(additional_paths)
     additional_list += [
-        os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
+        os.path.join('osiris', 'components', 'brave_new_tab_ui', 'data'),
     ]
     additional_paths = tuple(additional_list)
 
@@ -160,7 +160,7 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
 
 
 def CheckBraveMissingLicense(target_os, path, error):
-    if path.startswith('brave'):
+    if path.startswith('osiris'):
         if target_os == 'android':
             if path in DESKTOP_ONLY_PATHS:
                 return  # Desktop failures are not relevant on Android.
