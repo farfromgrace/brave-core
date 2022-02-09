@@ -257,7 +257,7 @@
         "dir": "src",
         "branch": "rename",
         "repository": {
-          "url": "ssh://git@github.com/farfromgrace/chromium"
+          "url": "https://github.com/farfromgrace/chromium"
         }
       }
     }
