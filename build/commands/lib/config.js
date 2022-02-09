@@ -29,7 +29,7 @@ const run = (cmd, args = []) => {
   return prog
 }
 
-// this is a huge hack because the npm config doesn't get passed through from brave-browser .npmrc/package.json
+// this is a huge hack because the npm config doesn't get passed through from osiris-browser .npmrc/package.json
 var packageConfig = function (key, sourceDir = rootDir) {
   let packages = { config: {} }
   const configAbsolutePath = path.join(sourceDir, 'package.json')
@@ -49,7 +49,7 @@ var packageConfig = function (key, sourceDir = rootDir) {
 }
 
 var packageConfigBraveCore = function (key) {
-  return packageConfig(key, path.join(rootDir, 'src', 'brave'))
+  return packageConfig(key, path.join(rootDir, 'src', 'osiris'))
 }
 
 const getNPMConfig = (key) => {
@@ -78,15 +78,15 @@ const Config = function () {
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
-  this.buildTarget = 'brave'
+  this.buildTarget = 'osiris'
   this.rootDir = rootDir
   this.isUniversalBinary = false
   this.scriptDir = path.join(this.rootDir, 'scripts')
   this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
   this.chromiumRepo = getNPMConfig(['projects', 'chrome', 'repository', 'url'])
-  this.braveCoreDir = path.join(this.srcDir, 'brave')
-  this.braveCoreRepo = getNPMConfig(['projects', 'brave-core', 'repository', 'url'])
+  this.braveCoreDir = path.join(this.srcDir, 'osiris')
+  this.braveCoreRepo = getNPMConfig(['projects', 'osiris-core', 'repository', 'url'])
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
   this.depotToolsDir = path.join(this.braveCoreDir, 'vendor', 'depot_tools')
@@ -130,7 +130,7 @@ const Config = function () {
   this.safeBrowsingApiEndpoint = getNPMConfig(['safebrowsing_api_endpoint']) || ''
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
   this.updaterDevEndpoint = getNPMConfig(['updater_dev_endpoint']) || ''
-  this.webcompatReportApiEndpoint = getNPMConfig(['webcompat_report_api_endpoint']) || 'https://webcompat.brave.com/1/webcompat'
+  this.webcompatReportApiEndpoint = getNPMConfig(['webcompat_report_api_endpoint']) || 'https://webcompat.osiris.com/1/webcompat'
   this.rewardsGrantDevEndpoint = getNPMConfig(['rewards_grant_dev_endpoint']) || ''
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
@@ -232,7 +232,7 @@ Config.prototype.buildArgs = function () {
     disable_fieldtrial_testing_config: true,
     safe_browsing_mode: 1,
     brave_services_key: this.braveServicesKey,
-    root_extra_deps: ["//brave"],
+    root_extra_deps: ["//osiris"],
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
@@ -240,7 +240,7 @@ Config.prototype.buildArgs = function () {
     is_universal_binary: this.isUniversalBinary,
     proprietary_codecs: true,
     ffmpeg_branding: "Chrome",
-    branding_path_component: "brave",
+    branding_path_component: "osiris",
     enable_nacl: false,
     enable_widevine: true,
     target_cpu: this.targetArch,
@@ -275,7 +275,7 @@ Config.prototype.buildArgs = function () {
     uphold_client_secret: this.upholdClientSecret,
     uphold_staging_client_id: this.upholdStagingClientId,
     uphold_staging_client_secret: this.upholdStagingClientSecret,
-    brave_product_name: getNPMConfig(['brave_product_name']) || "brave",
+    brave_product_name: getNPMConfig(['brave_product_name']) || "osiris",
     brave_version_major: version_parts[0],
     brave_version_minor: version_parts[1],
     brave_version_build: version_parts[2],
@@ -383,18 +383,18 @@ Config.prototype.buildArgs = function () {
     args.android_channel = this.channel
     if (!this.isOfficialBuild()) {
       args.android_channel = 'default'
-      args.chrome_public_manifest_package = 'com.brave.browser_default'
+      args.chrome_public_manifest_package = 'com.osiris.browser_default'
     } else if (this.channel === '') {
       args.android_channel = 'stable'
-      args.chrome_public_manifest_package = 'com.brave.browser'
+      args.chrome_public_manifest_package = 'com.osiris.browser'
     } else if (this.channel === 'beta') {
-      args.chrome_public_manifest_package = 'com.brave.browser_beta'
+      args.chrome_public_manifest_package = 'com.osiris.browser_beta'
       args.exclude_unwind_tables = false
     } else if (this.channel === 'dev') {
-      args.chrome_public_manifest_package = 'com.brave.browser_dev'
+      args.chrome_public_manifest_package = 'com.osiris.browser_dev'
     } else if (this.channel === 'nightly') {
       args.android_channel = 'canary'
-      args.chrome_public_manifest_package = 'com.brave.browser_nightly'
+      args.chrome_public_manifest_package = 'com.osiris.browser_nightly'
       args.exclude_unwind_tables = false
     }
 
@@ -455,7 +455,7 @@ Config.prototype.buildArgs = function () {
     args.fatal_linker_warnings = !this.isComponentBuild()
     // DCHECK's crash on Static builds without allowing the debugger to continue
     // Can be removed when approprioate DCHECK's have been fixed:
-    // https://github.com/brave/brave-browser/issues/10334
+    // https://github.com/osiris/osiris-browser/issues/10334
     args.dcheck_always_on = this.isDebug()
 
     args.ios_enable_content_widget_extension = false
@@ -464,13 +464,13 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_credential_provider_extension = false
     args.ios_enable_widget_kit_extension = false
 
-    args.ios_provider_target = "//brave/ios/browser/providers:brave_providers"
+    args.ios_provider_target = "//osiris/ios/browser/providers:brave_providers"
 
     args.ios_locales_pack_extra_source_patterns = [
       "%root_gen_dir%/components/brave_components_strings_",
     ]
     args.ios_locales_pack_extra_deps = [
-      "//brave/components/resources:strings",
+      "//osiris/components/resources:strings",
     ]
 
     delete args.safebrowsing_api_endpoint
@@ -515,9 +515,9 @@ Config.prototype.buildArgs = function () {
   }
 
   if (process.platform === 'win32') {
-    args.cc_wrapper = path.join(this.srcDir, 'brave', 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
+    args.cc_wrapper = path.join(this.srcDir, 'osiris', 'buildtools', 'win', 'redirect-cc', 'bin', 'redirect-cc.exe')
   } else {
-    args.cc_wrapper = path.join(this.srcDir, 'brave', 'script', 'redirect-cc.py')
+    args.cc_wrapper = path.join(this.srcDir, 'osiris', 'script', 'redirect-cc.py')
   }
   return args
 }
@@ -845,7 +845,7 @@ Config.prototype.update = function (options) {
   if (options.xcode_gen) {
     assert(process.platform === 'darwin' || options.target_os === 'ios')
     if (options.xcode_gen === 'ios') {
-      this.xcode_gen_target = '//brave/ios:*'
+      this.xcode_gen_target = '//osiris/ios:*'
     } else {
       this.xcode_gen_target = options.xcode_gen
     }
@@ -893,16 +893,16 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python3-bin'), true)
     env = this.addPathToEnv(env, path.join(this.depotToolsDir, 'python2-bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'chromium_src', 'python_modules'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'script'))
+    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'osiris', 'chromium_src', 'python_modules'))
+    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'osiris', 'script'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'tools', 'grit', 'grit', 'extern'))
-    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'vendor', 'requests'))
+    env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'osiris', 'vendor', 'requests'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'build'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
     env.GCLIENT_FILE = this.gClientFile
     env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
     env.PYTHONUNBUFFERED = '1'
-    env.TARGET_ARCH = this.gypTargetArch // for brave scripts
+    env.TARGET_ARCH = this.gypTargetArch // for osiris scripts
     env.GYP_MSVS_VERSION = env.GYP_MSVS_VERSION || '2017' // enable 2017
     if (this.channel != "") {
       env.BRAVE_CHANNEL = this.channel
