@@ -70,7 +70,7 @@ const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, o
     'brave_network_audit_tests',
   ]
   if (testSuites.includes(suite)) {
-    config.buildTarget = 'brave/test:' + suite
+    config.buildTarget = 'osiris/test:' + suite
   } else {
     config.buildTarget = suite
   }

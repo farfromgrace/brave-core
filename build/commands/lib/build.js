@@ -55,7 +55,7 @@ const touchOverriddenFiles = () => {
     return true
   }
 
-  const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
+  const chromiumSrcDir = path.join(config.srcDir, 'src', 'chromium_src')
   var sourceFiles = util.walkSync(chromiumSrcDir, applyFileFilter)
   const additionalGen = getAdditionalGenLocation()
 
@@ -91,7 +91,7 @@ const touchOverriddenVectorIconFiles = () => {
     return true
   }
 
-  const braveVectorIconsDir = path.join(config.srcDir, 'brave', 'vector_icons')
+  const braveVectorIconsDir = path.join(config.srcDir, 'src', 'vector_icons')
   var braveVectorIconFiles = util.walkSync(braveVectorIconsDir, applyFileFilter)
 
   // Touch original files by updating mtime.

@@ -177,7 +177,7 @@ const util = {
       },
       {
         managed: "%False%",
-        name: "src/brave",
+        name: "src/osiris",
         url: config.braveCoreRepo
       }
     ]
@@ -246,19 +246,19 @@ const util = {
     fileMap.add([path.join(braveComponentsDir, 'strings'), path.join(chromeComponentsDir, 'strings')])
     fileMap.add([braveAndroidJavaStringsTranslationsDir, chromeAndroidJavaStringsTranslationsDir])
     // By overwriting, we don't need to modify some grd files.
-    fileMap.add([path.join(braveAppDir, 'theme', 'brave'), path.join(chromeAppDir, 'theme', 'brave')])
-    fileMap.add([path.join(braveAppDir, 'theme', 'brave'), path.join(chromeAppDir, 'theme', 'chromium')])
-    fileMap.add([path.join(braveAppDir, 'theme', 'default_100_percent', 'brave'), path.join(chromeAppDir, 'theme', 'default_100_percent', 'brave')])
-    fileMap.add([path.join(braveAppDir, 'theme', 'default_200_percent', 'brave'), path.join(chromeAppDir, 'theme', 'default_200_percent', 'brave')])
-    fileMap.add([path.join(braveAppDir, 'theme', 'default_100_percent', 'brave'), path.join(chromeAppDir, 'theme', 'default_100_percent', 'chromium')])
-    fileMap.add([path.join(braveAppDir, 'theme', 'default_200_percent', 'brave'), path.join(chromeAppDir, 'theme', 'default_200_percent', 'chromium')])
+    fileMap.add([path.join(braveAppDir, 'theme', 'osiris'), path.join(chromeAppDir, 'theme', 'osiris')])
+    fileMap.add([path.join(braveAppDir, 'theme', 'osiris'), path.join(chromeAppDir, 'theme', 'chromium')])
+    fileMap.add([path.join(braveAppDir, 'theme', 'default_100_percent', 'osiris'), path.join(chromeAppDir, 'theme', 'default_100_percent', 'osiris')])
+    fileMap.add([path.join(braveAppDir, 'theme', 'default_200_percent', 'osiris'), path.join(chromeAppDir, 'theme', 'default_200_percent', 'osiris')])
+    fileMap.add([path.join(braveAppDir, 'theme', 'default_100_percent', 'osiris'), path.join(chromeAppDir, 'theme', 'default_100_percent', 'chromium')])
+    fileMap.add([path.join(braveAppDir, 'theme', 'default_200_percent', 'osiris'), path.join(chromeAppDir, 'theme', 'default_200_percent', 'chromium')])
     fileMap.add([path.join(braveAppDir, 'theme', 'default_100_percent', 'common'), path.join(chromeAppDir, 'theme', 'default_100_percent', 'common')])
     fileMap.add([path.join(braveAppDir, 'theme', 'default_200_percent', 'common'), path.join(chromeAppDir, 'theme', 'default_200_percent', 'common')])
     fileMap.add([path.join(braveComponentsDir, 'resources', 'default_100_percent'), path.join(chromeComponentsDir, 'resources', 'default_100_percent')])
-    fileMap.add([path.join(braveComponentsDir, 'resources', 'default_100_percent', 'brave'), path.join(chromeComponentsDir, 'resources', 'default_100_percent', 'chromium')])
+    fileMap.add([path.join(braveComponentsDir, 'resources', 'default_100_percent', 'osiris'), path.join(chromeComponentsDir, 'resources', 'default_100_percent', 'chromium')])
     fileMap.add([path.join(braveComponentsDir, 'resources', 'default_200_percent'), path.join(chromeComponentsDir, 'resources', 'default_200_percent')])
-    fileMap.add([path.join(braveComponentsDir, 'resources', 'default_200_percent', 'brave'), path.join(chromeComponentsDir, 'resources', 'default_200_percent', 'chromium')])
-    fileMap.add([path.join(braveAppVectorIconsDir, 'vector_icons', 'brave'), path.join(chromeAppDir, 'vector_icons', 'brave')])
+    fileMap.add([path.join(braveComponentsDir, 'resources', 'default_200_percent', 'osiris'), path.join(chromeComponentsDir, 'resources', 'default_200_percent', 'chromium')])
+    fileMap.add([path.join(braveAppVectorIconsDir, 'vector_icons', 'osiris'), path.join(chromeAppDir, 'vector_icons', 'osiris')])
     // Copy chrome-logo-faded.png for replacing chrome logo of welcome page with brave's on Win8.
     fileMap.add([path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'), path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
